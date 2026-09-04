@@ -1,26 +1,76 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --craft-ink: #0c0b0a;
+  --craft-charcoal: #1a1816;
+  --craft-copper: #b87333;
+  --craft-bone: #f2eee6;
+  --craft-cream: #faf7f2;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-craft-cream text-craft-ink font-sans antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(184, 115, 51, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(107, 127, 106, 0.08), transparent),
+    linear-gradient(180deg, #faf7f2 0%, #f2eee6 100%);
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+::selection {
+  background: rgba(184, 115, 51, 0.28);
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-craft-copper px-6 py-3 text-sm font-semibold tracking-wide text-white transition hover:bg-craft-copperBright focus:outline-none focus-visible:ring-2 focus-visible:ring-craft-copper focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-craft-ink/15 bg-white/70 px-6 py-3 text-sm font-semibold tracking-wide text-craft-ink backdrop-blur transition hover:border-craft-copper/40 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-craft-copper focus-visible:ring-offset-2 active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-craft-ink/70 transition hover:bg-craft-ink/5 hover:text-craft-ink;
+  }
+
+  .field {
+    @apply w-full rounded-md border border-craft-ink/10 bg-white/80 px-4 py-3 text-sm text-craft-ink outline-none transition placeholder:text-craft-ink/40 focus:border-craft-copper focus:ring-2 focus:ring-craft-copper/20;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-craft-ink/55;
+  }
+
+  .section-title {
+    @apply font-display text-4xl font-semibold tracking-tight text-craft-ink md:text-5xl;
+  }
+
+  .glass-panel {
+    @apply rounded-2xl border border-white/60 bg-white/55 shadow-[0_20px_50px_-30px_rgba(12,11,10,0.35)] backdrop-blur-md;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(12, 11, 10, 0.18);
+  border-radius: 999px;
 }

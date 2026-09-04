@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Barber {
+  id        String     @id @default(cuid())
+  name      String
+  specialty String?
+  bio       String?
+  avatar    String?
+  active    Boolean    @default(true)
+  bookings  Booking[]
+  createdAt DateTime   @default(now())
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  durationMin Int
+  price       Int
+  active      Boolean   @default(true)
+  bookings    Booking[]
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+
+  @@unique([phone])
+}
+
+model Booking {
+  id              String   @id @default(cuid())
+  customerId      String
+  barberId        String
+  serviceId       String
+  date            String
+  startTime       String
+  endTime         String
+  status          String   @default("confirmed")
+  notes           String?
+  recommendedStyle String?
+  reminderSent    Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id])
+  barber   Barber   @relation(fields: [barberId], references: [id])
+  service  Service  @relation(fields: [serviceId], references: [id])
+
+  @@index([date, barberId])
+  @@index([status])
+}
+
+model Admin {
+  id           String @id @default(cuid())
+  username     String @unique
+  passwordHash String
+}
